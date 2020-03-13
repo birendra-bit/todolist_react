@@ -6,7 +6,7 @@ const Navigation = props=>{
     let profile = null;
     if( props.userStatus ){
         profile = (
-            <div className="UerProfile">
+            <div className="cards UerProfile">
                <div className="UserProfileDisplay">
                 <p>welcome Abche jkelwjoe</p>
                     <i className="fa fa-user-circle-o UserIcon" aria-hidden="true"></i>
@@ -16,7 +16,11 @@ const Navigation = props=>{
                </div>
                {props.dropDown ?<ul>
                             <li>Edit Profile</li>
-                            <li onClick={props.userStatusHandler} >Logout</li>
+                            <li><i class="fa fa-list mt-1" aria-hidden="true"/>
+                                &nbsp;&nbsp;&nbsp;<p>List</p></li>
+                            <li><i class="fa fa-th-large mt-1" aria-hidden="true"/>
+                                &nbsp;&nbsp;&nbsp;<p>Cards</p></li>
+                                <li onClick={props.userStatusHandler} >Logout</li>
                             </ul>:null }
             </div>
         )

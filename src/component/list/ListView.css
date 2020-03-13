@@ -14,3 +14,9 @@ hr{
 .fa-trash:hover{
     color: #ff0000;
 }
+.row i .fa-star{
+    color: #ffa500 ;
+}
+.row i .fa-check-circle-o{
+    color: #008000;
+}

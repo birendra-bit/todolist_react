@@ -44,12 +44,15 @@
     transition: 0.5s;
 }
 .UerProfile ul li{
+    display: flex;
+}
+.UerProfile ul li{
     margin: 0;
     font-size: 15px;
     font-weight: bold;
     padding: 10px;
 }
 .UerProfile ul li:hover{
-    background: #000;
-    color: #fff;
+    /* background: #0000ff; */
+    color: #0000ff;
 }

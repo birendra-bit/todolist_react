@@ -4,24 +4,22 @@ import Axios from 'axios'
 import Navigation from '../../component/navigation/Navigation'
 import Navbar from '../../component/navigation/Navbar'
 import ListView from '../../component/list/ListView'
+import Cards from '../../component/cards/Cards'
 
 const headers = {
+    'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': localStorage.getItem('token')
+    'Authorization':localStorage.getItem('token')
   }
 class Homepage extends Component{
         state={
-            renderList: true,
+            listview:false,
             userStatus: true,
             dropDown: false,
             displayAll: true,
             daily:false,
             monthly:false,
-            data:[
-                {
-
-                }
-            ]
+            data:[]
         }
     componentDidMount(){
         Axios.get(Url.url+'task',{headers:headers}).then( response =>{
@@ -39,23 +37,29 @@ class Homepage extends Component{
             return d._id === id;
         })
        const toUpdateData = {
-           ...this.state.data[index].data
+           ...this.state.data[index]
        };
-       toUpdateData[key] = !toUpdateData[key];
-       const upDatedData = [...this.state.data];
-       upDatedData[index].data = toUpdateData;
+       const valueAtIndex = {...toUpdateData.data}
+       valueAtIndex[key] = !valueAtIndex[key];
+       toUpdateData.data = valueAtIndex
+       Axios.put(Url.url+'task',toUpdateData,{headers:headers}).then( response =>{
+        // this.setState({
+        //     data : response.data
+        // })
+        // console.log('data : ',this.state.data)
+    }).catch(error =>{
+        console.log(error)
+    })
 
-       this.setState({
-                data:{[index]:upDatedData}
-       });
-       console.log('updata : ',index ,this.state)
+    //    this.setState({
+    //        data:{...this.state.data,[index] : toUpdateData}
+    //    })
     }
     addTask = (e,values) =>{
         let data = {
             user:localStorage.getItem('userEmail'),
             data:values
         }
-        debugger
         Axios.post(Url.url+'task',data,{headers:headers})
         .then( response =>{
             let updateData = [...this.state.data];
@@ -104,23 +108,36 @@ class Homepage extends Component{
     
     render(){
         let listview = [];
-        console.log('state ',this.state.data)
-        if( this.state.data != null ){
+        if( this.state.listview){
             listview = (
-                <div>{
+                <div>
+                    {
                     this.state.data.map((d)=>{
-                        debugger
-                     return <ListView key={d._id} 
-                             data={d.data} 
-                             id={d._id}
-                             isCompleteHandler={this.isCompleteHandler}/>
-                     })
-                 }
+                        // debugger
+                    return <ListView key={d._id} 
+                            data={d.data} 
+                            id={d._id}
+                            isCompleteHandler={this.isCompleteHandler}/>
+                        })
+                    }
                 </div>
             )
-            // this.setState( {
-            //     renderList:!this.state.renderList
-            // })
+        }else{
+            listview = (
+                <div className="row mt-5">
+                    <div className="mx-auto col-lg-8 col-md-8 col-sm-6 col-xs-6 d-flex">
+                        {
+                            this.state.data.map((d)=>{
+                                // debugger
+                            return <Cards key={d._id} 
+                                    data={d.data} 
+                                    id={d._id}
+                                    isCompleteHandler={this.isCompleteHandler}/>
+                                })
+                        }
+                    </div>
+                </div>
+            )
         }
         return(
             <div>

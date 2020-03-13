@@ -34,7 +34,7 @@ class Navbar extends Component{
     const {displayAll, daily, monthly } = this.props.state;
     const {addActiveClass} = this.props;
     return (
-        <div>
+        <div className="row">
             <div className="Main mx-auto col-lg-8 col-md-4 col-sm-6 col-xs-6">
                 <div className={displayAll? 'active':null}
                     onClick={(e)=> addActiveClass(e,'displayAll')} >
