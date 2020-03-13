@@ -1,0 +1,16 @@
+.row {
+    margin: 0;
+}
+.row i{
+    font-size: 20px;
+    color: slateblue;
+}
+.row p{
+    font-size: 18px;
+}
+hr{
+    border: 1px solid slateblue;
+}
+.fa-trash:hover{
+    color: #ff0000;
+}

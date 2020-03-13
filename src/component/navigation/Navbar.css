@@ -1,0 +1,24 @@
+.Main{
+    display: flex;
+}
+.Main div{
+    width: 20%;
+    /* height: 60px; */
+    background-color: white;
+    padding: 20px;
+}
+/* .Main div.active{
+    background-color: #000;
+} */
+.Main .AddTask{
+    background-color: aqua;
+}
+.Main .AddTask .Add{
+    font-weight: bold;
+    color: #fff;
+}
+.Main div:hover,.Main div.active {
+    border-bottom: 2px solid #ffa500;
+    color: #ffa500;
+    font-weight: bold;
+}

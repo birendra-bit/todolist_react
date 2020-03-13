@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './App.css';
 import Indexpage from './container/Indexpage'
 import {BrowserRouter} from 'react-router-dom'
-function App() {
+const App = ()=> {
   return (
     <BrowserRouter>
         <Indexpage/>

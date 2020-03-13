@@ -20,16 +20,16 @@ class Signuppage extends Component{
     }
     eventChangeHandler= e =>{
         e.preventDefault();
-        // console.log(e.target.name,' ',e.target.value)
         this.setState({userInfo:{...this.state.userInfo,[e.target.name]:e.target.value}});
     }
     userSignup =(data)=>{
+        console.log('signup:',Url.url)
         Axios.post(Url.url+'signup',data).then( response =>{
             console.log(response);
+            this.props.history.push({pathname:'/'})
         }).catch(error =>{
             console.log(error)
         })
-        this.props.history.push({pathname:'/homepage'})
     }
     onSubmitHandler = e =>{
             e.preventDefault();

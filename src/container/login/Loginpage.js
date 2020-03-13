@@ -14,22 +14,22 @@ class Loginpage extends Component{
             },
             userStatus:false
         }
-        
     }
     userLogin =(data)=>{
         Axios.post(Url.url+'login',data).then( response =>{
-            console.log(response);
+            localStorage.setItem("token",response.data.token);
+            localStorage.setItem("userName",response.data.userName);
+            localStorage.setItem("userEmail",response.data.userEmail);
+            console.log('complete call')
             this.props.history.push({pathname:'/homepage'})
         }).catch(error =>{
             console.log(error)
         })
-        this.props.history.push({pathname:'/homepage'})
     }
     eventChangeHandler= e =>{
         this.setState({userInfo:{...this.state.userInfo,[e.target.name]:e.target.value}});
     }
     signupHandler = () =>{
-        // console.log('signup: ')
         this.props.history.push({pathname:'/signuppage'})
     }
     onSubmitHandler = e =>{
