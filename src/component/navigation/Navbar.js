@@ -42,11 +42,11 @@ class Navbar extends Component{
                 </div>
                 <div className={daily ? 'active':null}
                     onClick={(e)=> addActiveClass(e,'daily')}>
-                    <span>Daily</span>
+                    <span>Completed</span>
                 </div>
                 <div className={monthly? 'active':null}
                     onClick={(e)=> addActiveClass(e,'monthly')}>
-                    <span>Monthly</span>
+                    <span>Pending</span>
                 </div>
                 <div className="AddTask" data-toggle="modal" data-target="#exampleModalCenter">
                     <span className="Add">Add</span><span> Task</span>

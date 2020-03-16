@@ -11,6 +11,12 @@ const headers = {
     'Content-Type': 'application/json',
     'Authorization':localStorage.getItem('token')
   }
+  const getIndex = (id,data)=>{
+    const index = data.findIndex( d=>{
+        return d._id === id;
+    })
+    return index;
+}
 class Homepage extends Component{
         state={
             listview:false,
@@ -33,27 +39,48 @@ class Homepage extends Component{
         
     }
     updateState = (id,key)=>{
-        const index = this.state.data.findIndex( d=>{
-            return d._id === id;
-        })
-       const toUpdateData = {
-           ...this.state.data[index]
-       };
-       const valueAtIndex = {...toUpdateData.data}
-       valueAtIndex[key] = !valueAtIndex[key];
-       toUpdateData.data = valueAtIndex
-       Axios.put(Url.url+'task',toUpdateData,{headers:headers}).then( response =>{
-        // this.setState({
-        //     data : response.data
-        // })
-        // console.log('data : ',this.state.data)
-    }).catch(error =>{
-        console.log(error)
-    })
+    const data = [...this.state.data];
+    const index = getIndex(id,data);
+    const dataAtIndex = {
+        ...data[index]
+    }
+    const val = {...dataAtIndex.data}
+    val[key] = !val[key];
+    dataAtIndex.data = val;
+    data[index] = dataAtIndex
 
-    //    this.setState({
-    //        data:{...this.state.data,[index] : toUpdateData}
-    //    })
+       Axios.put(Url.url+'task',dataAtIndex,{headers:headers}).then( response =>{
+            if( response.status === 200 ){
+                this.setState({
+                    data:data
+                })
+            }else{
+                
+            }
+       }).catch(error =>{
+            console.log(error)
+        })
+    }
+    deleteTask = id =>{
+        const data = [...this.state.data];
+        const index = getIndex(id,data);
+        // debugger
+        if( index !== -1 ){
+            Axios.delete(Url.url+'task',{
+                headers:headers,
+                params:{'id':id}
+            })
+            .then( response =>{
+                if(response.status === 200 ){                    
+                    data.splice(index,1);
+                    this.setState({
+                        data:data
+                    })
+                }
+            }).catch(error =>{
+                console.log(error)
+            })
+        }
     }
     addTask = (e,values) =>{
         let data = {
@@ -72,6 +99,9 @@ class Homepage extends Component{
             console.log(error)
         })
     }
+    deleteTaskHandler=(e,key)=>{
+        this.deleteTask(key);
+    }
     logoutHandler =()=>{
         localStorage.clear();
         this.props.history.goBack({pathname:'/'});
@@ -81,7 +111,7 @@ class Homepage extends Component{
             dropDown:!prevSate.dropDown
         }));
     }
-    isCompleteHandler = (e, id, key)=>{
+    taskStatusHandler = (e, id, key)=>{
         this.updateState(id,key);
     }
     addActiveClass = (e,name) =>{
@@ -117,7 +147,8 @@ class Homepage extends Component{
                     return <ListView key={d._id} 
                             data={d.data} 
                             id={d._id}
-                            isCompleteHandler={this.isCompleteHandler}/>
+                            taskStatusHandler={this.taskStatusHandler}
+                            deleteTaskHandler = {this.deleteTaskHandler}/>
                         })
                     }
                 </div>
@@ -125,14 +156,15 @@ class Homepage extends Component{
         }else{
             listview = (
                 <div className="row mt-5">
-                    <div className="mx-auto col-lg-8 col-md-8 col-sm-6 col-xs-6 d-flex">
+                    <div className="mx-auto col-lg-8 col-md-8 col-sm-6 d-flex flex-wrap">
                         {
                             this.state.data.map((d)=>{
                                 // debugger
                             return <Cards key={d._id} 
                                     data={d.data} 
                                     id={d._id}
-                                    isCompleteHandler={this.isCompleteHandler}/>
+                                    taskStatusHandler={this.taskStatusHandler}
+                                    deleteTaskHandler = {this.deleteTaskHandler}/>
                                 })
                         }
                     </div>
@@ -140,7 +172,7 @@ class Homepage extends Component{
             )
         }
         return(
-            <div>
+            <div >
                 <Navigation userStatusHandler ={this.logoutHandler} 
                         text='Logout'
                         userStatus={this.state.userStatus}
@@ -154,12 +186,6 @@ class Homepage extends Component{
                        listview
                    }
             </div>
-            // <Home logoutHandler={this.logoutHandler}
-            //     toggleHandler={this.toggleHandler}
-            //     addActiveClass={this.addActiveClass}
-            //     addTask={this.addTask}
-            //     state={this.state}
-            //     />
         )
     }
 }

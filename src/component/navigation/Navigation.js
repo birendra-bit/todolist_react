@@ -8,7 +8,7 @@ const Navigation = props=>{
         profile = (
             <div className="cards UerProfile">
                <div className="UserProfileDisplay">
-                <p>welcome Abche jkelwjoe</p>
+        <p>welcome {localStorage.getItem("userName")}</p>
                     <i className="fa fa-user-circle-o UserIcon" aria-hidden="true"></i>
                     {props.dropDown ?<i className="fa fa-caret-up Dropdown" aria-hidden="true" onClick={props.toggleHandler}/>
                         : <i className="fa fa-caret-down Dropdown" aria-hidden="true" onClick={props.toggleHandler}/>
