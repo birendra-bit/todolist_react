@@ -19,12 +19,13 @@ const headers = {
 }
 class Homepage extends Component{
         state={
-            listview:false,
+            listview:true,
             userStatus: true,
             dropDown: false,
             displayAll: true,
-            daily:false,
-            monthly:false,
+            completed:false,
+            pending:false,
+            important:false,
             data:[]
         }
     componentDidMount(){
@@ -118,21 +119,42 @@ class Homepage extends Component{
         if( name === 'displayAll'){
             this.setState(prevState=>({
                 displayAll : prevState.displayAll? prevState.displayAll:!prevState.displayAll,
-                daily : prevState.daily? !prevState.daily:prevState.daily,
-                monthly: prevState.monthly? !prevState.monthly: prevState.monthly
+                completed : prevState.completed? !prevState.completed:prevState.completed,
+                pending: prevState.pending? !prevState.pending: prevState.pending,
+                important : prevState.important? !prevState.important: prevState.important
             }));
-        }else if( name ==='daily'){
+        }else if( name ==='completed'){
             this.setState(prevState=>({
                 displayAll: prevState.displayAll? !prevState.displayAll:prevState.displayAll,
-                daily: prevState.daily? prevState.daily: !prevState.daily,
-                monthly: prevState.monthly? !prevState.monthly: prevState.monthly
+                completed: prevState.completed? prevState.completed: !prevState.completed,
+                pending: prevState.pending? !prevState.pending: prevState.pending,
+                important : prevState.important? !prevState.important: prevState.important
+            }))
+        }else if( name === 'pending') {
+            this.setState(prevState=>({
+                displayAll: prevState.displayAll? !prevState.displayAll:prevState.displayAll,
+                completed: prevState.completed? !prevState.completed: prevState.completed,
+                pending: prevState.pending? prevState.pending: !prevState.pending,
+                important : prevState.important? !prevState.important: prevState.important
             }))
         }else{
             this.setState(prevState=>({
                 displayAll: prevState.displayAll? !prevState.displayAll:prevState.displayAll,
-                daily: prevState.daily? !prevState.daily: prevState.daily,
-                monthly: prevState.monthly? prevState.monthly: !prevState.monthly
+                completed: prevState.completed? !prevState.completed: prevState.completed,
+                pending: prevState.pending? !prevState.pending: prevState.pending,
+                important : prevState.important? prevState.important: !prevState.important
             }))
+        }
+    }
+    displayListOrCardHandler=(e,name)=>{
+        if( name === 'list'){
+            this.setState(prevSate =>({
+            listview:true
+            }));
+        }else{
+            this.setState(prevSate =>({
+                listview:false
+            }));
         }
     }
     
@@ -143,29 +165,75 @@ class Homepage extends Component{
                 <div>
                     {
                     this.state.data.map((d)=>{
-                        // debugger
-                    return <ListView key={d._id} 
-                            data={d.data} 
-                            id={d._id}
-                            taskStatusHandler={this.taskStatusHandler}
-                            deleteTaskHandler = {this.deleteTaskHandler}/>
-                        })
+                        if( this.state.completed && d.data.isCompleted){
+                            return <ListView key={d._id} 
+                                data={d.data} 
+                                id={d._id}
+                                taskStatusHandler={this.taskStatusHandler}
+                                deleteTaskHandler = {this.deleteTaskHandler}/>
+                                }
+                        else if( this.state.important && d.data.isImportant){
+                            return <ListView key={d._id} 
+                                data={d.data} 
+                                id={d._id}
+                                taskStatusHandler={this.taskStatusHandler}
+                                deleteTaskHandler = {this.deleteTaskHandler}/>
+                                }
+                        else if( this.state.pending && d.data.isCompleted === false){
+                            return <ListView key={d._id} 
+                                data={d.data} 
+                                id={d._id}
+                                taskStatusHandler={this.taskStatusHandler}
+                                deleteTaskHandler = {this.deleteTaskHandler}/>
+                        }
+                        else if(this.state.displayAll){
+                            return <ListView key={d._id} 
+                                data={d.data} 
+                                id={d._id}
+                                taskStatusHandler={this.taskStatusHandler}
+                                deleteTaskHandler = {this.deleteTaskHandler}/>       
+                                }
+                            })
+                        }
                     }
                 </div>
             )
         }else{
             listview = (
                 <div className="row mt-5">
-                    <div className="mx-auto col-lg-8 col-md-8 col-sm-6 d-flex flex-wrap">
+                    <div className="m-auto col-lg-8 col-md-8 col-sm-6 d-flex flex-wrap">
                         {
                             this.state.data.map((d)=>{
                                 // debugger
-                            return <Cards key={d._id} 
-                                    data={d.data} 
-                                    id={d._id}
-                                    taskStatusHandler={this.taskStatusHandler}
-                                    deleteTaskHandler = {this.deleteTaskHandler}/>
-                                })
+                            if( this.state.completed && d.data.isCompleted){
+                                    return <Cards key={d._id} 
+                                        data={d.data} 
+                                        id={d._id}
+                                        taskStatusHandler={this.taskStatusHandler}
+                                        deleteTaskHandler = {this.deleteTaskHandler}/>
+                                    }
+                            else if( this.state.important && d.data.isImportant){
+                                    return <Cards key={d._id} 
+                                        data={d.data} 
+                                        id={d._id}
+                                        taskStatusHandler={this.taskStatusHandler}
+                                        deleteTaskHandler = {this.deleteTaskHandler}/>
+                                    }
+                            else if ( this.state.pending && d.data.isCompleted === false){
+                                    return <Cards key={d._id} 
+                                        data={d.data} 
+                                        id={d._id}
+                                        taskStatusHandler={this.taskStatusHandler}
+                                        deleteTaskHandler = {this.deleteTaskHandler}/>
+                            }
+                            else if( this.state.displayAll){
+                                    return <Cards key={d._id} 
+                                        data={d.data} 
+                                        id={d._id}
+                                        taskStatusHandler={this.taskStatusHandler}
+                                        deleteTaskHandler = {this.deleteTaskHandler}/>
+                                    }
+                            })
                         }
                     </div>
                 </div>
@@ -177,11 +245,13 @@ class Homepage extends Component{
                         text='Logout'
                         userStatus={this.state.userStatus}
                         dropDown={this.state.dropDown}
-                        toggleHandler = {this.toggleHandler} 
+                        toggleHandler = {this.toggleHandler}
+                        displayListOrCardHandler={this.displayListOrCardHandler} 
                         />
                         <br/><br/><br/><br/>
-                    <Navbar state={this.state} addActiveClass ={this.addActiveClass} 
-                        addTask={this.addTask} />
+                    <Navbar state={this.state} 
+                        addActiveClass ={this.addActiveClass} 
+                        addTask={this.addTask}/>
                    {
                        listview
                    }

@@ -7,6 +7,9 @@ import Homepage from './home/Homepage'
 class Indexpage extends Component{
     constructor(props){
         super(props);
+        this.state={
+            loggedIn:false
+        }
     }
     render(){
         return(

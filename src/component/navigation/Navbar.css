@@ -22,3 +22,11 @@
     color: #ffa500;
     font-weight: bold;
 }
+@media screen and (max-width: 500px) {  
+    .Main div span{
+        font-size: 8px;
+    }
+    .Main div{
+        padding: 5px;
+    }
+}

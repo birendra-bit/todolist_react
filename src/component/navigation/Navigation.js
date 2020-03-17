@@ -6,19 +6,24 @@ const Navigation = props=>{
     let profile = null;
     if( props.userStatus ){
         profile = (
-            <div className="cards UerProfile">
+            <div className="UerProfile">
                <div className="UserProfileDisplay">
         <p>welcome {localStorage.getItem("userName")}</p>
-                    <i className="fa fa-user-circle-o UserIcon" aria-hidden="true"></i>
-                    {props.dropDown ?<i className="fa fa-caret-up Dropdown" aria-hidden="true" onClick={props.toggleHandler}/>
-                        : <i className="fa fa-caret-down Dropdown" aria-hidden="true" onClick={props.toggleHandler}/>
+                    <i className="fa fa-user-circle-o UserIcon" 
+                        aria-hidden="true"></i>
+                    {props.dropDown ?<i className="fa fa-caret-up Dropdown" 
+                        aria-hidden="true" onClick={props.toggleHandler}/>
+                        : <i className="fa fa-caret-down Dropdown" 
+                        aria-hidden="true" onClick={props.toggleHandler}/>
                     }
                </div>
                {props.dropDown ?<ul>
                             <li>Edit Profile</li>
-                            <li><i class="fa fa-list mt-1" aria-hidden="true"/>
+                            <li onClick={(e)=>props.displayListOrCardHandler(e,'list')}>
+                                <i className="fa fa-list mt-1" aria-hidden="true"/>
                                 &nbsp;&nbsp;&nbsp;<p>List</p></li>
-                            <li><i class="fa fa-th-large mt-1" aria-hidden="true"/>
+                            <li onClick={(e)=>props.displayListOrCardHandler(e,'cards')}>
+                                <i className="fa fa-th-large mt-1" aria-hidden="true"/>
                                 &nbsp;&nbsp;&nbsp;<p>Cards</p></li>
                                 <li onClick={props.userStatusHandler} >Logout</li>
                             </ul>:null }

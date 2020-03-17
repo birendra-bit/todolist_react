@@ -1,5 +1,7 @@
 import React from 'react';
 import './ListView.css'
+import Moment from 'react-moment'
+import 'moment-timezone'
 
 const ListView = props => {
     const {data, taskStatusHandler,id,deleteTaskHandler}= props
@@ -16,7 +18,7 @@ const ListView = props => {
                                     name="isCompleted"
                                     onClick={(e)=>taskStatusHandler(e,id,'isCompleted')}/>
                     }
-                    <p className="ml-2">{data.title}</p>
+                    <h5 className="ml-2">{data.title}</h5>
                     {
                             data.isImportant?<i className="fa fa-star ml-auto" 
                                     aria-hidden="true"
@@ -30,8 +32,10 @@ const ListView = props => {
                     <p className="ml-4">{data.description}</p>
                     <div className="d-flex p-2">
                         <i className="fa fa-chevron-up" aria-hidden="true"></i>
-                    <p className="ml-2">Due Date {data.dueDate}</p>
-                        <i className="fa fa-trash ml-auto" 
+                    <h6 className="ml-2">
+                        Due Date <Moment format="DD/MM/YYYY">{data.dueDate}</Moment>
+                    </h6>
+                    <i className="fa fa-trash ml-auto" 
                         aria-hidden="true"
                         onClick={(e)=>deleteTaskHandler(e,id)}/>
                     </div>
